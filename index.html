@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Image Gallery</title>
+  <style>
+    /* Reset and Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      line-height: 1.6;
+    }
+    
+    /* Header Styles */
+    header {
+      background: linear-gradient(135deg, #2c3e50, #4ca1af);
+      color: white;
+      padding: 2rem 0;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    /* Navigation */
+    nav {
+      background-color: #343a40;
+      padding: 1rem 0;
+    }
+    
+    nav ul {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+    
+    nav ul li {
+      margin: 0 1rem;
+    }
+    
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+    
+    nav ul li a:hover {
+      background-color: #495057;
+    }
+    
+    /* Gallery Styles */
+    .gallery-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px 0;
+    }
+    
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      aspect-ratio: 1/1;
+    }
+    
+    .gallery-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+    
+    .gallery-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    
+    .gallery-item:hover .gallery-img {
+      transform: scale(1.05);
+    }
+    
+    .img-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+      color: white;
+      padding: 1rem;
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+    }
+    
+    .gallery-item:hover .img-overlay {
+      transform: translateY(0);
+    }
+    
+    .img-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    /* Lightbox Styles */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    
+    .lightbox-content {
+      position: relative;
+      max-width: 90%;
+      max-height: 90vh;
+    }
+    
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+    
+    .lightbox-caption {
+      color: white;
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 1.2rem;
+    }
+    
+    .close-btn {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      color: white;
+      font-size: 2rem;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .gallery {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .gallery {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
+      }
+      
+      nav ul li {
+        margin: 0.5rem;
+      }
+      
+      .img-overlay {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+      }
+    }
+    
+    @media (max-width: 400px) {
+      .gallery {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Nature Gallery</h1>
+    <p>Beautiful moments captured in time</p>
+  </header>
+  
+  <nav>
+    <ul>
+      <li><a href="ii.html">Home</a></li>
+      <li><a href="index.html">Natures gallary</a></li>
+      <li><a href="animal.html">Animals</a></li>
+      <li><a href="landscape.html">Landscape</a></li>
+    </ul>
+  </nav>
+  
+  <div class="gallery-container">
+    <div class="gallery">
+      <div class="gallery-item">
+        <img src="img/nature1.jpeg" alt="Nature" class="gallery-img">
+        <div class="img-overlay">
+          <h3 class="img-title">Nature</h3>
+          <p>Beautiful landscape</p>
+        </div>
+      </div>
+      
+      <div class="gallery-item">
+        <img src="img/nature2.jpg" alt="Nature" class="gallery-img">
+        <div class="img-overlay">
+          <h3 class="img-title">Nature</h3>
+          <p>Serene environment</p>
+        </div>
+      </div>
+      
+      <div class="gallery-item">
+        <img src="img/nature3.jpg" alt="Nature" class="gallery-img">
+        <div class="img-overlay">
+          <h3 class="img-title">Nature</h3>
+          <p>Peaceful scenery</p>
+        </div>
+      </div>
+      
+      <div class="gallery-item">
+        <img src="img/nature4.jpg" alt="Nature" class="gallery-img">
+        <div class="img-overlay">
+          <h3 class="img-title">Nature</h3>
+          <p>Morning dew</p>
+        </div>
+      </div>
+      
+      <div class="gallery-item">
+        <img src="img/nature5.jpeg" alt="Nature" class="gallery-img">
+        <div class="img-overlay">
+          <h3 class="img-title">Nature</h3>
+          <p>Forest path</p>
+        </div>
+      </div>
+      
+      <div class="gallery-item">
+        <img src="img/nature6.jpg" alt="Nature" class="gallery-img">
+        <div class="img-overlay">
+          <h3 class="img-title">Nature</h3>
+          <p>Mountain view</p>
+        </div>
+      </div>
+      
+      <div class="gallery-item">
+        <img src="img/nature7.jpg" alt="Nature" class="gallery-img">
+        <div class="img-overlay">
+          <h3 class="img-title">Nature</h3>
+          <p>Waterfall</p>
+        </div>
+      </div>
+      
+      <div class="gallery-item">
+        <img src="img/nature8.jpeg" alt="Nature" class="gallery-img">
+        <div class="img-overlay">
+          <h3 class="img-title">Nature</h3>
+          <p>Sunset</p>
+        </div>
+      </div>
+      
+      <div class="gallery-item">
+        <img src="img/nature9.jpg" alt="Nature" class="gallery-img">
+        <div class="img-overlay">
+          <h3 class="img-title">Nature</h3>
+          <p>River flow</p>
+        </div>
+      </div>
+      
+      <div class="gallery-item">
+        <img src="img/nature10.jpg" alt="Nature" class="gallery-img">
+        <div class="img-overlay">
+          <h3 class="img-title">Nature</h3>
+          <p>Autumn leaves</p>
+        </div>
+      </div>
+      
+      <div class="gallery-item">
+        <img src="img/nature11.jpg" alt="Nature" class="gallery-img">
+        <div class="img-overlay">
+          <h3 class="img-title">Nature</h3>
+          <p>Winter snow</p>
+        </div>
+      </div>
+      
+      <div class="gallery-item">
+        <img src="img/nature12.jpg" alt="Nature" class="gallery-img">
+        <div class="img-overlay">
+          <h3 class="img-title">Nature</h3>
+          <p>Spring flowers</p>
+        </div>
+      </div>
+      
+      <div class="gallery-item">
+        <img src="img/nature14.jpg" alt="Nature" class="gallery-img">
+        <div class="img-overlay">
+          <h3 class="img-title">Nature</h3>
+          <p>Desert dunes</p>
+        </div>
+      </div>
+      
+      <div class="gallery-item">
+        <img src="img/nature15.jpg" alt="Nature" class="gallery-img">
+        <div class="img-overlay">
+          <h3 class="img-title">Nature</h3>
+          <p>Ocean waves</p>
+        </div>
+      </div>
+      
+      <div class="gallery-item">
+        <img src="img/nature16.jpg" alt="Nature" class="gallery-img">
+        <div class="img-overlay">
+          <h3 class="img-title">Nature</h3>
+          <p>Forest trail</p>
+        </div>
+      </div>
+      
+      <div class="gallery-item">
+        <img src="img/nature17.jpg" alt="Nature" class="gallery-img">
+        <div class="img-overlay">
+          <h3 class="img-title">Nature</h3>
+          <p>Mountain peak</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Lightbox -->
+  <div class="lightbox">
+    <div class="lightbox-content">
+      <button class="close-btn">&times;</button>
+      <img src="" alt="" class="lightbox-img">
+      <p class="lightbox-caption"></p>
+    </div>
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Lightbox functionality
+      const galleryItems = document.querySelectorAll('.gallery-item');
+      const lightbox = document.querySelector('.lightbox');
+      const lightboxImg = document.querySelector('.lightbox-img');
+      const lightboxCaption = document.querySelector('.lightbox-caption');
+      const closeBtn = document.querySelector('.close-btn');
+      
+      // Open lightbox
+      galleryItems.forEach(item => {
+        item.addEventListener('click', function() {
+          const imgSrc = this.querySelector('img').src;
+          const imgAlt = this.querySelector('img').alt;
+          const caption = this.querySelector('.img-title').textContent;
+          const description = this.querySelector('.img-overlay p').textContent;
+          
+          lightboxImg.src = imgSrc;
+          lightboxImg.alt = imgAlt;
+          lightboxCaption.textContent = `${caption} - ${description}`;
+          lightbox.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+      
+      // Close lightbox
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = 'auto';
+      }
+      
+      closeBtn.addEventListener('click', closeLightbox);
+      
+      lightbox.addEventListener('click', function(e) {
+        if (e.target === lightbox) {
+          closeLightbox();
+        }
+      });
+      
+      // Close with ESC key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+          closeLightbox();
+        }
+      });
+      
+      // Responsive adjustments
+      function adjustGallery() {
+        const gallery = document.querySelector('.gallery');
+        const viewportWidth = window.innerWidth;
+        
+        if (viewportWidth < 400) {
+          gallery.style.gridTemplateColumns = '1fr 1fr';
+        } else if (viewportWidth < 576) {
+          gallery.style.gridTemplateColumns = 'repeat(auto-fill, minmax(150px, 1fr))';
+        } else if (viewportWidth < 768) {
+          gallery.style.gridTemplateColumns = 'repeat(auto-fill, minmax(200px, 1fr))';
+        } else {
+          gallery.style.gridTemplateColumns = 'repeat(auto-fill, minmax(250px, 1fr))';
+        }
+      }
+      
+      window.addEventListener('resize', adjustGallery);
+      adjustGallery(); // Initial call
+    });
+  </script>
+</body>
+</html>
